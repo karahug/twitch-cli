@@ -3,18 +3,18 @@
 >help => displays all valid commands
 >quit => quits
 >subscriptions => displays all live subscribed streams
->subscriptions -a => displays all subscribed channels
->top => shows top livestreams on twitch
+>top -s=> shows top livestreams on twitch
 >top -g => shows top games on twitch
->search -c => searches channels
+>view => opens stream, displays live streams for a game
 >search -g => searches games
->search -s => searches livestreams
+>search -s=> searches livestreams
 >next => displays next page of results
 >prev => displays previous page of results
 >back => exits current function
->view => opens stream if channel is live or is stream, shows vods if channel not live, displays live streams if game
 
 #extra features
+>search -c => searches channels
 >chat => displays chat
 >chat -p => opens popout chat in firefox
 >say => prints to stream chat if stream is live
+>subscriptions -a => displays all subscribed channels
