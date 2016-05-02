@@ -2,9 +2,9 @@ require_relative "twitch_classes"
 
 # necessary for windows
 require "openssl"
-
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE; nil
-
+$-v = nil
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+$-v = false
 
 puts "Welcome to twitch-cmd app"
 
