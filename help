@@ -12,7 +12,7 @@
 >prev => displays previous page of results
 >back => exits current function
 
-#extra features
+#extra features(WIP)
 >search -c => searches channels
 >chat => displays chat
 >chat -p => opens popout chat in firefox

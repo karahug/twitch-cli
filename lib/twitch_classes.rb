@@ -16,8 +16,14 @@ class Page
     def dispatch(command)
         command_words = command.split(' ')
         return self.followed if command_words[0] == 'followed'
-        return self.top(command_words[1]) if command_words[0] == 'top'   
+        return self.top(command_words[1]) if command_words[0] == 'top' 
+        
+        begin
         return self.search(command_words[2..-1], command_words[1]) if command_words[0] == 'search' 
+        rescue
+            puts "Enter search terms"
+        end
+        
         return self.next_page if command_words[0] == 'next'
         return self.prev if command_words[0] == 'prev'
         return self.view(command_words[1]) if command_words[0] == "view"
@@ -41,6 +47,13 @@ class Page
         self.display
     end
     
+    def streams_of_game(game)
+        streams = get_streams_of_game(game)
+        get_streams_data(streams)
+        self.initialize_page
+        self.display
+    end
+    
     def search(terms, options = nil)
         search = get_search(terms, options)
         if options == "-g" # probably can refactor both get_***_data into one function
@@ -56,6 +69,7 @@ class Page
         self.page_number += 1
         self.page = data[(0+10*self.page_number)..(0+10*(self.page_number+1)-1)]
         self.display if self.page != nil
+        self.prev if self.page == nil
     end
     
     def prev
@@ -73,7 +87,7 @@ class Page
        if selected.keys.include?(:url)
            livestreamer(selected[:url])
        else
-           self.search(selected[:game].split(" "))
+           self.streams_of_game(selected[:game].split(" "))
        end
    end
    
@@ -91,7 +105,7 @@ class Page
         if options == "-g"
             url = "https://api.twitch.tv/kraken/search/games?q=" + query + "&type=suggest"
         else
-            url = "https://api.twitch.tv/kraken/search/streams?q=" + query
+            url = "https://api.twitch.tv/kraken/search/streams?q=" + query + "&limit=100"
         end
         return JSON.parse(open(url).read)
     end
@@ -121,6 +135,7 @@ class Page
         }
         }
         self.data = sorted
+        sort_streams
     end
     
     def get_games_data(raw_data)
@@ -155,6 +170,15 @@ class Page
             entry += 1
         end; nil
         
+    end
+    def sort_streams
+        self.data.sort! {|left, right| left["viewers"] <=> right["viewers"]}
+    end
+    
+    def get_streams_of_game(game)
+        url = "https://api.twitch.tv/kraken/streams?game=" + game.join("+")
+        streams = JSON.parse(open(url).read)
+        return streams
     end
     
 end
