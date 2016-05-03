@@ -26,7 +26,11 @@ class Page
         
         return self.next_page if command_words[0] == 'next'
         return self.prev if command_words[0] == 'prev'
+        begin
         return self.view(command_words[1]) if command_words[0] == "view"
+        rescue
+        puts "Enter a number to view"
+        end
     end
     
     def followed
