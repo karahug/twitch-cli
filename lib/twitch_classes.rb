@@ -19,7 +19,7 @@ class Page
         return self.top(command_words[1]) if command_words[0] == 'top' 
         
         begin
-        return self.search(command_words[2..-1], command_words[1]) if command_words[0] == 'search' 
+            return self.search(command_words[2..-1], command_words[1]) if command_words[0] == 'search' 
         rescue
             puts "Enter search terms"
         end
@@ -27,9 +27,9 @@ class Page
         return self.next_page if command_words[0] == 'next'
         return self.prev if command_words[0] == 'prev'
         begin
-        return self.view(command_words[1]) if command_words[0] == "view"
+            return self.view(command_words[1]) if command_words[0] == "view"
         rescue
-        puts "Enter a number to view"
+            puts "Enter a number to view"
         end
     end
     
@@ -88,11 +88,15 @@ class Page
    def view(s)
        n = Integer(s)
        selected = self.page[n]
-       if selected.keys.include?(:url)
-           livestreamer(selected[:url])
-       else
-           self.streams_of_game(selected[:game].split(" "))
-       end
+       begin
+           if selected.keys.include?(:url)
+               livestreamer(selected[:url])
+           else
+               self.streams_of_game(selected[:game].split(" "))
+           end
+        rescue
+            puts "No viewable item with that number"
+        end
    end
    
    
